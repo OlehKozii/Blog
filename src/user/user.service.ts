@@ -97,8 +97,17 @@ export class UserService {
     }
   }
 
-  async delete() {
-    return Promise.resolve(undefined);
+  async delete(user: RefreshTokenUserInfoDto) {
+    try {
+      return await this.dataSource
+        .createQueryBuilder()
+        .delete()
+        .from(User)
+        .where({ id: user.id })
+        .execute();
+    } catch (e) {
+      handleErrors(e);
+    }
   }
 
   async refreshToken(res: Response, user: RefreshTokenUserInfoDto) {
